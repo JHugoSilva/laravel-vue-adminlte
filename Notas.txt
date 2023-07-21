@@ -1,0 +1,7 @@
+npm install --save-dev @vitejs/plugin-vue
+
+npm i vue
+
+npm i admin-lte@3.2 --save
+
+npm i vue-router
