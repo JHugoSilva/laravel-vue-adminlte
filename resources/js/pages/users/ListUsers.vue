@@ -1,14 +1,29 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import axios from "axios";
 
 const users = ref([]);
+
+const form = reactive({
+    name:'',
+    email:'',
+    password: ''
+})
 
 const getUsers = () => {
   axios.get("/api/users").then((response) => {
     users.value = response.data;
   });
 };
+
+const createUser = () => {
+    axios.post('/api/users', form).then((response)=>{
+        form.name = '';
+        form.email = '';
+        form.password = '';
+        $('#createUserModal').modal('hide')
+    })
+}
 
 onMounted(() => {
   getUsers();
@@ -102,7 +117,8 @@ onMounted(() => {
               >Name</label
             >
             <input
-              type="email"
+              type="text"
+              v-model="form.name"
               class="form-control"
               id="name"
               placeholder="Name"
@@ -114,6 +130,7 @@ onMounted(() => {
             >
             <input
               type="email"
+              v-model="form.email"
               class="form-control"
               id="email"
               placeholder="Email"
@@ -125,6 +142,7 @@ onMounted(() => {
             >
             <input
               type="password"
+              v-model="form.password"
               class="form-control"
               id="password"
               placeholder="******"
@@ -139,7 +157,7 @@ onMounted(() => {
           >
             Close
           </button>
-          <button type="button" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-primary" @click="createUser">Save</button>
         </div>
       </div>
     </div>
